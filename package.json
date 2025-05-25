@@ -23,7 +23,9 @@
     "tailwindcss": "3.4.14"
   },
   "devDependencies": {
-    "gh-pages": "^6.1.1"
+    "@types/node": "22.15.21",
+    "gh-pages": "^6.1.1",
+    "typescript": "5.8.3"
   },
   "homepage": "https://adit4443ya.github.io/gsoc-blogs"
 }
