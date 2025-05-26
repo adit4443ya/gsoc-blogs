@@ -1,11 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { HTMLMotionProps } from "framer-motion";
-import dynamic from "next/dist/shared/lib/dynamic";
+import Week1Post from "./Week1Post";
 
-// Define typed motion components
 const MotionDiv = motion.div as React.ComponentType<HTMLMotionProps<"div"> & React.HTMLAttributes<HTMLDivElement>>;
 const MotionH1 = motion.h1 as React.ComponentType<HTMLMotionProps<"h1"> & React.HTMLAttributes<HTMLHeadingElement>>;
 const MotionP = motion.p as React.ComponentType<HTMLMotionProps<"p"> & React.HTMLAttributes<HTMLParagraphElement>>;
@@ -14,20 +12,16 @@ const MotionArticle = motion.article as React.ComponentType<HTMLMotionProps<"art
 type Props = {
   title: string;
   date: string;
-  mdxSource: MDXRemoteSerializeResult;
+  slug: string;
 };
 
-const PostContentClient = dynamic(() => import("./PostContentClient"), {
-  ssr: false,
-});
-
-export default function PostClient({ title, date, mdxSource }: Props) {
+export default function PostClient({ title, date, slug }: Props) {
   return (
     <MotionDiv
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="min-h-screen bg-background-light dark:bg-background-dark py-20"
+      className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-200 dark:from-gray-900 dark:to-gray-800 py-20"
     >
       <div className="max-w-5xl mx-auto px-4">
         <MotionH1
@@ -42,7 +36,7 @@ export default function PostClient({ title, date, mdxSource }: Props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-lg text-secondary dark:text-gray-400 mb-8"
+          className="text-lg text-gray-600 dark:text-gray-400 mb-8"
         >
           {date}
         </MotionP>
@@ -50,9 +44,9 @@ export default function PostClient({ title, date, mdxSource }: Props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          className="prose prose-lg dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-lg"
+          className="bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-xl"
         >
-          <PostContentClient mdxSource={mdxSource} />
+          {slug === "week-1" ? <Week1Post /> : <p>Post content not available.</p>}
         </MotionArticle>
       </div>
     </MotionDiv>
