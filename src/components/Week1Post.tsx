@@ -31,51 +31,6 @@ contains
 
 end program parallel_processing`;
 
-  const clangAst = `  |-OMPParallelDirective 0x5dcc678e58f0 <line:12:5, col:25>
-  | \`-CapturedStmt 0x5dcc678e5870 <line:13:5, line:23:5>
-  |   |-CapturedDecl 0x5dcc678e44b8 <<invalid sloc>> <invalid sloc> nothrow
-  |   | |-CompoundStmt 0x5dcc678e57d0 <line:13:5, line:23:5>
-  |   | | \`-OMPSingleDirective 0x5dcc678e5798 <line:14:9, col:27>
-  |   | |   \`-CapturedStmt 0x5dcc678e5738 <line:15:9, line:22:9>
-  |   | |     |-CapturedDecl 0x5dcc678e4ae8 <<invalid sloc>> <invalid sloc>
-  |   | |     | |-CompoundStmt 0x5dcc678e5698 <line:15:9, line:22:9>
-  |   | |     | | \`-ForStmt 0x5dcc678e5660 <line:16:13, line:21:13>
-  |   | |     | |   |-DeclStmt 0x5dcc678e4c88 <line:16:18, col:27>
-  |   | |     | |   | \`-VarDecl 0x5dcc678e4c00 <col:18, col:26> col:22 used i 'int' cinit
-  |   | |     | |   \`-CompoundStmt 0x5dcc678e5648 <col:42, line:21:13>
-  |   | |     | |     \`-OMPTaskDirective 0x5dcc678e5600 <line:17:17, col:33>
-  |   | |     | |       |-OMPFirstprivateClause 0x5dcc678e55c0 <<invalid sloc>> <implicit>
-  |   | |     | |       \`-CapturedStmt 0x5dcc678e53e0 <line:18:17, line:20:17>
-  |   | |     | |         \`-CapturedDecl 0x5dcc678e4f78 <<invalid sloc>> <invalid sloc> nothrow
-  |   | |     | |           |-CompoundStmt 0x5dcc678e53c8 <line:18:17, line:20:17>
-  |   | |     | |           | \`-CallExpr 0x5dcc678e5388 <line:19:21, col:35> 'void'
-  |   | |     | |           |   |-ImplicitCastExpr 0x5dcc678e5370 <col:21> 'void (*)(int)' <FunctionToPointerDecay>
-  |   | |     | |           |   | \`-DeclRefExpr 0x5dcc678e5300 <col:21> 'void (int)' Function 0x5dcc678e3f08 'process_item' 'void (int)'
-  |   | |     | |           |   \`-ImplicitCastExpr 0x5dcc678e53b0 <col:34> 'int' <LValueToRValue>`;
-
-  const lfortranAsrWithPragmas = `OMPRegion(
-  region = Parallel,
-  clauses = [],
-  body = [
-    OMPRegion(
-      region = Single,
-      clauses = [],
-      body = [
-        DoLoop(
-          head = [{v = "i", start = IntegerConstant(1), end = IntegerConstant(10)}],
-          body = [
-            OMPRegion(
-              region = Task,
-              clauses = [],
-              body = [Call(symbol="process_item")]
-            )
-          ]
-        )
-      ]
-    )
-  ]
-)`;
-
   const fortranCodeWithoutPragmas = `module thread_data_module_tasks
   use, intrinsic :: iso_c_binding
   implicit none
@@ -175,77 +130,52 @@ program main
   call GOMP_parallel(c_funloc(parallel_region), ptr, 0, 0)
 end program main`;
 
-  return (
-    <div className="post-content space-y-8">
-      {/* Introduction Section with a Gradient Header */}
-      <div className="relative">
-        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500 dark:from-indigo-400 dark:to-purple-400 mb-6 leading-tight">
-          GSoC 2025 Week 1: Kickoff Contributions to OpenMP Support in LFortran 🚀
-        </h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          Hey there! I’m <span className="font-semibold text-indigo-600 dark:text-indigo-400">Aditya Trivedi</span>, a pre-final year B.Tech student at IIT Jodhpur, and I’m thrilled to dive into my Google Summer of Code (GSoC) 2025 journey with <span className="font-medium text-purple-600 dark:text-purple-400">LFortran</span>! My mission? To supercharge OpenMP support in LFortran, a cutting-edge Fortran compiler, by adding advanced parallel programming constructs like <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">teams</code>, <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">tasks</code>, and <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">sections</code>. Let’s break down my Week 1 progress—covering the goals, current setup, challenges, a fresh design proposal, and some insights from digging into Clang and GFortran. Buckle up! 🚀
-        </p>
-      </div>
+  const clangAst = `  |-OMPParallelDirective 0x5dcc678e58f0 <line:12:5, col:25>
+  | \`-CapturedStmt 0x5dcc678e5870 <line:13:5, line:23:5>
+  |   |-CapturedDecl 0x5dcc678e44b8 <<invalid sloc>> <invalid sloc> nothrow
+  |   | |-CompoundStmt 0x5dcc678e57d0 <line:13:5, line:23:5>
+  |   | | \`-OMPSingleDirective 0x5dcc678e5798 <line:14:9, col:27>
+  |   | |   \`-CapturedStmt 0x5dcc678e5738 <line:15:9, line:22:9>
+  |   | |     |-CapturedDecl 0x5dcc678e4ae8 <<invalid sloc>> <invalid sloc>
+  |   | |     | |-CompoundStmt 0x5dcc678e5698 <line:15:9, line:22:9>
+  |   | |     | | \`-ForStmt 0x5dcc678e5660 <line:16:13, line:21:13>
+  |   | |     | |   |-DeclStmt 0x5dcc678e4c88 <line:16:18, col:27>
+  |   | |     | |   | \`-VarDecl 0x5dcc678e4c00 <col:18, col:26> col:22 used i 'int' cinit
+  |   | |     | |   \`-CompoundStmt 0x5dcc678e5648 <col:42, line:21:13>
+  |   | |     | |     \`-OMPTaskDirective 0x5dcc678e5600 <line:17:17, col:33>
+  |   | |     | |       |-OMPFirstprivateClause 0x5dcc678e55c0 <<invalid sloc>> <implicit>
+  |   | |     | |       \`-CapturedStmt 0x5dcc678e53e0 <line:18:17, line:20:17>
+  |   | |     | |         \`-CapturedDecl 0x5dcc678e4f78 <<invalid sloc>> <invalid sloc> nothrow
+  |   | |     | |           |-CompoundStmt 0x5dcc678e53c8 <line:18:17, line:20:17>
+  |   | |     | |           | \`-CallExpr 0x5dcc678e5388 <line:19:21, col:35> 'void'
+  |   | |     | |           |   |-ImplicitCastExpr 0x5dcc678e5370 <col:21> 'void (*)(int)' <FunctionToPointerDecay>
+  |   | |     | |           |   | \`-DeclRefExpr 0x5dcc678e5300 <col:21> 'void (int)' Function 0x5dcc678e3f08 'process_item' 'void (int)'
+  |   | |     | |           |   \`-ImplicitCastExpr 0x5dcc678e53b0 <col:34> 'int' <LValueToRValue>`;
 
-      {/* Objective Section */}
-      <div>
-        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          🎯 The Mission: What We’re Aiming For
-        </h2>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          The big goal here is to level up LFortran’s OpenMP capabilities. Right now, it supports the <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">parallel do</code> construct, but we’re taking it further by adding <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">teams</code>, <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">tasks</code>, <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">sections</code>, <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">single</code>, and <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">simd</code>—all aligned with the OpenMP 6.0 spec. This upgrade will let LFortran users tackle complex parallel workloads with hierarchical parallelism and dynamic task scheduling, making it a go-to tool for high-performance computing (HPC) enthusiasts. 💻
-        </p>
-      </div>
+  const lfortranAsrWithPragmas = `OMPRegion(
+  region = Parallel,
+  clauses = [],
+  body = [
+    OMPRegion(
+      region = Single,
+      clauses = [],
+      body = [
+        DoLoop(
+          head = [{v = "i", start = IntegerConstant(1), end = IntegerConstant(10)}],
+          body = [
+            OMPRegion(
+              region = Task,
+              clauses = [],
+              body = [Call(symbol="process_item")]
+            )
+          ]
+        )
+      ]
+    )
+  ]
+)`;
 
-      {/* Current Design Section */}
-      <div>
-        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          🛠️ The Current Setup: Where We Stand
-        </h2>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          LFortran’s got a solid foundation with the <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">parallel do</code> construct, supporting clauses like <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">private</code>, <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">shared</code>, <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">reduction</code>, and <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">collapse</code>. Here’s the workflow:
-        </p>
-        <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Parsing:</span> The <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">visit_Pragma</code> function in <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">ast_body_visitor.cpp</code> spots <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">!$omp parallel do</code> and its clauses, turning them into a <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">DoConcurrentLoop</code> node in the Abstract Semantic Representation (ASR).</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Semantic Analysis:</span> Checks loop variables and clauses for correct types and declarations.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Backend (OpenMP Pass):</span> The <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">openmp.cpp</code> pass outlines the loop body into a function, splits iterations using <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">omp_get_thread_num</code> and <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">omp_get_num_threads</code>, and generates <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">GOMP_parallel</code> calls to the GNU OpenMP library (<code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">libgomp</code>).</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Example:</span> A <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">parallel do</code> loop becomes a <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">DoConcurrentLoop</code> node, lowered to a function with thread partitioning—check out <a href="https://github.com/lfortran/lfortran/issues/3777#issuecomment-2104814180" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #3777</a> for details.</li>
-        </ul>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          This setup works great for loop-based parallelism, but it’s got limits when we try to add other OpenMP constructs. Let’s dive into those challenges next! 🔍
-        </p>
-      </div>
-
-      {/* Challenges Section */}
-      <div>
-        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          ⚠️ Challenges: What’s Holding Us Back?
-        </h2>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          The <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">DoConcurrentLoop</code> approach hits some roadblocks when we try to expand OpenMP support. Here’s the breakdown:
-        </p>
-        <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Non-Loop Constructs:</span> Stuff like <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">sections</code> (independent code blocks) and <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">tasks</code> (dynamic scheduling) doesn’t fit the loop-focused <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">DoConcurrentLoop</code> node—trying to make it work feels like forcing a square peg into a round hole. 🟦🟥</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Clause Support:</span> New clauses like <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">num_teams</code> for <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">teams</code> or <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">depend</code> for <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">tasks</code> are tough to integrate into the current node structure.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Nesting:</span> Handling nested constructs—like a <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">parallel do</code> inside <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">teams</code>—gets messy since <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">DoConcurrentLoop</code> expects a single loop level.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Maintainability:</span> Shoehorning diverse constructs into a loop-based node risks turning the design into a tangled mess, making it harder to maintain as OpenMP evolves. 🕸️</li>
-        </ul>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          These hurdles got me thinking—it’s time for a fresh approach to handle OpenMP like a pro. Let’s talk about my proposed solution! 💡
-        </p>
-      </div>
-
-      {/* Proposed Design Section */}
-      <div>
-        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          🌟 The Big Idea: Introducing the <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPRegion</code> ASR Node
-        </h2>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          To tackle these challenges, I’m proposing a shiny new <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPRegion</code> ASR node—a flexible, all-purpose solution for OpenMP constructs. Check out the structure below:
-        </p>
-        <div className="mt-4">
-          <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-            {`stmt
+  const ompRegionStructure = `stmt
   = ...
   | OMPRegion(omp_region_type region, omp_clause* clauses, stmt* body)
 
@@ -261,119 +191,240 @@ reduction_op
 schedule_type
   = Static | Dynamic | Guided | Auto | Runtime
 
-  ...`}
-          </SyntaxHighlighter>
-        </div>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          <span className="font-semibold text-indigo-600 dark:text-indigo-400">Why It’s Awesome:</span>
+  ...`;
+
+  return (
+    <div className="post-content space-y-8">
+      {/* Introduction Section */}
+      <div className="relative">
+        {/* <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500 dark:from-indigo-400 dark:to-purple-400 mb-6 leading-tight">
+          GSoC 2025 Kickoff: Week 1 Contribution to OpenMP Support in LFortran
+        </h1> */}
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          I am <span className="font-semibold text-indigo-600 dark:text-indigo-400">Aditya Trivedi</span>, a contributor to the Google Summer of Code (GSoC) 2025, working on enhancing OpenMP support in LFortran, a LLVM based Fortran compiler. This blog post provides a summary of my progress during the first week, where I have focused on laying the groundwork for extending OpenMP features such as teams, tasks, and sections. My project aims to build upon LFortran’s existing OpenMP capabilities, positioning it as a robust tool for high-performance computing (HPC).
         </p>
-        <ul className="list-disc pl-6 mt-2 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Flexibility:</span> It handles both loop-based stuff like <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">parallel do</code> and non-loop constructs like <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">sections</code> and <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">tasks</code> with ease. 🛠️</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Extensibility:</span> Adding new constructs and clauses is a breeze—just extend <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">omp_region_type</code> and <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">omp_clause</code>. It’s ready for OpenMP 6.0 and beyond! 🚀</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Nesting:</span> Nested directives? No problem! Recursive <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPRegion</code> nodes in the body handle them like a champ. 🌳</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Standards Alignment:</span> It mirrors GFortran’s tree nodes (e.g., <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMP_SECTIONS</code>) and Clang’s AST classes (e.g., <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPSectionsDirective</code>), making <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">libgomp</code> integration smooth. 🔄</li>
+      </div>
+
+      {/* Objective Section */}
+      <div>
+        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
+          Objective
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          The primary goal of this project is to expand LFortran’s OpenMP support to include constructs beyond the existing parallel do, such as teams, tasks, sections, single, and SIMD, in alignment with the <a href="https://www.openmp.org/wp-content/uploads/OpenMP-RefGuide-6.0-OMP60SC24-web.pdf" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">OpenMP 6.0 standard</a>. This enhancement will enable LFortran to handle complex parallel workloads, making it competitive with established compilers like GFortran and Clang for HPC applications. During Week 1, my efforts were concentrated on analyzing the current design, identifying its limitations, proposing a new approach, and studying how other compilers implement OpenMP, thereby establishing a foundation for the upcoming implementation phase.
+        </p>
+      </div>
+
+      {/* Current Design Section */}
+      <div>
+        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
+          Current Design
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          LFortran currently supports the parallel do construct with clauses such as private, shared, reduction, and collapse. The implementation, as detailed in <a href="https://github.com/lfortran/lfortran/issues/3777" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #3777</a>, operates as follows:
+        </p>
+        <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Parsing:</span> The visit_Pragma function in ast_body_visitor.cpp recognizes !$omp parallel do and converts it to a DoConcurrentLoop node in the Abstract Semantic Representation (ASR), capturing clauses and loop details.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Backend:</span> The OpenMP pass (openmp.cpp) outlines the loop body into a function, partitions iterations across threads using omp_get_thread_num and omp_get_num_threads, and generates GOMP_parallel calls to the libgomp runtime.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Example:</span> A parallel do loop is transformed into a DoConcurrentLoop node, lowered to a function with thread partitioning, as described in <a href="https://github.com/lfortran/lfortran/issues/3777#issuecomment-2104814180" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #3777, Comment #2104814180</a>.</li>
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          The <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPRegion</code> node will be processed in a new OpenMP pass, mapping each <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">region</code> type to the right GOMP calls—like <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">GOMP_teams</code> or <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">GOMP_task</code>. It’s a game-changer for LFortran’s OpenMP support! ⚡
+          While this design is effective for loop-based parallelism, it presents limitations when attempting to support other OpenMP constructs.
+        </p>
+      </div>
+
+      {/* Challenges Section */}
+      <div>
+        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
+          Challenges in the Current Design
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          While the DoConcurrentLoop approach is suitable for parallel do, extending it to support new constructs such as teams, tasks, and sections introduces several challenges:
+        </p>
+        <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Non-Loop Constructs:</span> Constructs like sections (independent blocks) and tasks (dynamic scheduling) do not fit the loop-centric DoConcurrentLoop structure, necessitating complex workarounds.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Clause Support:</span> New clauses (e.g., num_teams for teams, depend for tasks) are difficult to integrate into the existing node’s clause arrays.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Nesting:</span> Handling nested constructs (e.g., parallel do inside teams) is challenging, as DoConcurrentLoop assumes a single loop level.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Scalability:</span> Adapting a loop-based node for diverse constructs risks creating a convoluted design, which could complicate maintenance as OpenMP continues to evolve.</li>
+        </ul>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+          These limitations, which are further discussed in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>, necessitated the exploration of alternative designs to better accommodate a wider range of OpenMP constructs.
+        </p>
+      </div>
+
+      {/* Proposed Design Section */}
+      <div>
+        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
+          Proposed Design: OMPRegion ASR Node
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          To address the identified challenges, I propose the introduction of a new OMPRegion ASR node, designed to handle all OpenMP constructs in a flexible manner. The proposed node structure is outlined below:
+        </p>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            View OMPRegion Node Structure
+          </summary>
+          <div className="relative mt-2">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
+            <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+              {ompRegionStructure}
+            </SyntaxHighlighter>
+          </div>
+        </details>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+          The benefits of this approach include:
+        </p>
+        <ul className="list-disc pl-6 mt-2 space-y-2 text-lg text-gray-700 dark:text-gray-300">
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Flexibility:</span> The node supports both loop-based constructs (e.g., parallel do) and non-loop constructs (e.g., sections, tasks) naturally.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Extensibility:</span> It facilitates the addition of new constructs and clauses by extending enums, ensuring alignment with the OpenMP 6.0 specification.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Nesting:</span> Nested directives are managed effectively through recursive OMPRegion nodes, making it suitable for complex scenarios such as teams containing a parallel do.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Standards Alignment:</span> The design mirrors GFortran’s tree nodes (e.g., OMP_SECTIONS, OMP_TASK) and Clang’s AST classes (e.g., OMPSectionsDirective, OMPTaskDirective), simplifying integration with the libgomp runtime.</li>
+        </ul>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+          This proposed design, along with prototype minimal reproducible examples (MREs), has been detailed in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>, demonstrating its feasibility for implementation.
         </p>
       </div>
 
       {/* Exploration Section */}
       <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          🔍 Digging Deep: Lessons from Clang and GFortran
+          Exploration of Clang and GFortran’s OpenMP Handling
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          To shape this design, I took a deep dive into how Clang and GFortran handle OpenMP constructs. Here’s what I found:
+          To inform the design of the OMPRegion node, I conducted an analysis of how Clang and GFortran process OpenMP constructs, focusing on teams, tasks, and sections:
         </p>
         <ul className="list-disc pl-6 mt-4 space-y-4 text-lg text-gray-700 dark:text-gray-300">
           <li>
-            <span className="font-semibold text-indigo-600 dark:text-indigo-400">GFortran (GCC):</span>
+            <span className="font-semibold text-indigo-600 dark:text-indigo-400">GFortran:</span>
             <ul className="list-circle pl-6 mt-2 space-y-2">
-              <li><span className="font-medium">Frontend:</span> Parses directives into specific tree nodes (e.g., <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMP_TEAMS</code>, <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMP_SECTIONS</code>) with <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMP_CLAUSE</code> nodes for clauses.</li>
-              <li><span className="font-medium">Middle-End:</span> Lowers to GIMPLE, outlining bodies into functions and generating <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">libgomp</code> calls (e.g., <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">GOMP_sections_start</code>).</li>
-              <li><span className="font-medium">Backend:</span> Produces assembly with runtime calls for thread management.</li>
-              <li><span className="font-medium">Tools:</span> Used <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">gfortran -fdump-tree-all</code> to peek at the tree nodes. 🔎</li>
+              <li><span className="font-medium">Frontend:</span> Directives are parsed into specific tree nodes (e.g., OMP_TEAMS, OMP_SECTIONS) with OMP_CLAUSE nodes to represent associated clauses.</li>
+              <li><span className="font-medium">Backend:</span> These nodes are lowered to GIMPLE, where the directive bodies are outlined into functions, and libgomp calls (e.g., GOMP_teams, GOMP_sections_start) are generated.</li>
+              <li><span className="font-medium">Example:</span> A sections directive is transformed into an OMP_SECTIONS node, which is then lowered to a switch statement with GOMP_sections_start, as documented in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>.</li>
             </ul>
           </li>
           <li>
-            <span className="font-semibold text-indigo-600 dark:text-indigo-400">Clang (LLVM):</span>
+            <span className="font-semibold text-indigo-600 dark:text-indigo-400">Clang:</span>
             <ul className="list-circle pl-6 mt-2 space-y-2">
-              <li><span className="font-medium">Frontend:</span> Creates AST classes (e.g., <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPTeamsDirective</code>, <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPTaskDirective</code>) with separate clause objects.</li>
-              <li><span className="font-medium">Code Generation:</span> Outlines bodies and generates LLVM IR with <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">libomp</code> calls (e.g., <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">__kmpc_fork_teams</code>). LFortran uses <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">libgomp</code> instead due to variadic function quirks.</li>
-              <li><span className="font-medium">Tools:</span> Used <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">clang -fopenmp -Xclang -ast-dump</code> to analyze ASTs and <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">-emit-llvm</code> for IR.</li>
+              <li><span className="font-medium">Frontend:</span> OpenMP directives are represented as AST classes (e.g., OMPTeamsDirective, OMPTaskDirective), with separate objects for clauses.</li>
+              <li><span className="font-medium">Backend:</span> The AST is lowered to LLVM IR, generating libomp calls (e.g., __kmpc_fork_teams). LFortran, however, uses libgomp due to issues with variadic functions in libomp.</li>
+              <li><span className="font-medium">Example:</span> A task directive is represented as an OMPTaskDirective, which is lowered to __kmpc_omp_task calls.</li>
             </ul>
           </li>
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          Both compilers use specific nodes per directive, which inspired the flexible <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPRegion</code> design—a perfect fit for LFortran’s evolving OpenMP needs. I’m hashing out the details in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>. 🗣️
+          This analysis, documented in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>, highlights the advantages of using specific nodes for each construct, as it enhances type safety and modularity. These findings support the adoption of the OMPRegion approach for LFortran.
         </p>
       </div>
+
+      {/* Issues Opened Section */}
+      <div>
+        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
+          Issues Opened
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          To track progress and facilitate collaboration, I have opened the following issues, each accompanied by minimal reproducible examples (MREs) in C and Fortran, both with and without pragmas, as well as GOMP-based implementations:
+        </p>
+        <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
+          <li><a href="https://github.com/lfortran/lfortran/issues/7363" className="text-indigo-500 dark:text-indigo-400 hover:underline">[OPENMP] TEAM Construct #7363</a>: Proposes support for the teams construct with clauses such as num_teams and thread_limit.</li>
+          <li><a href="https://github.com/lfortran/lfortran/issues/7365" className="text-indigo-500 dark:text-indigo-400 hover:underline">[OPENMP] TASK Construct #7365</a>: Focuses on implementing the task construct to enable dynamic scheduling.</li>
+          <li><a href="https://github.com/lfortran/lfortran/issues/7366" className="text-indigo-500 dark:text-indigo-400 hover:underline">[OPENMP] SECTIONS Construct #7366</a>: Addresses the sections construct for concurrent execution of independent code blocks.</li>
+          <li><a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">OpenMP Support Design Discussion #7332</a>: Serves as the central hub for design discussions, MREs, and analysis of Clang and GFortran’s OpenMP implementations.</li>
+        </ul>
+      </div>
+
+      {/* Proposal: Processing DO CONCURRENT Section */}
+      {/* <div>
+        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
+          Proposal: Processing DO CONCURRENT
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          LFortran currently maps the parallel do construct to a DoConcurrentLoop node in the ASR. However, DO CONCURRENT is a distinct Fortran construct with its own semantics. To extend OpenMP support while maintaining clarity, I propose the following approach for handling DO CONCURRENT loops:
+        </p>
+        <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Approach:</span> Parse DO CONCURRENT into DoConcurrentLoop nodes, applying the same loop-partitioning logic as parallel do (e.g., distributing iterations using omp_get_thread_num).</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Benefits:</span> This approach reuses the proven backend logic for loop partitioning, keeps OpenMP directives (via OMPRegion) separate from DO CONCURRENT (via DoConcurrentLoop), and allows for independent optimization of DO CONCURRENT constructs.</li>
+        </ul>
+      </div> */}
 
       {/* Example Section */}
       <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          💻 Let’s See It in Action: Tasks Construct Breakdown
+          Example: Task Construct Representations
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          To show how this all comes together, let’s look at the <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">Tasks</code> construct MRE from <a href="https://github.com/lfortran/lfortran/issues/7366" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7366</a>. I’ll break it down with and without pragmas—plus some cool visuals to make it pop! 🎨
+          To illustrate the application of the proposed OMPRegion node, this section presents an example of the task construct as detailed in <a href="https://github.com/lfortran/lfortran/issues/7366" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7366</a>. The example is provided in multiple forms: Fortran code with OpenMP pragmas, Fortran code using GOMP runtime calls, the corresponding Clang AST representation, and the proposed LFortran ASR design.
         </p>
 
-        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">With Pragmas (Fortran Code)</h3>
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-          <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-            {fortranCodeWithPragmas}
-          </SyntaxHighlighter>
-        </div>
+        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">Fortran Code with Pragmas</h3>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            View Fortran Code with Pragmas
+          </summary>
+          <div className="relative mt-2">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
+            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+              {fortranCodeWithPragmas}
+            </SyntaxHighlighter>
+          </div>
+        </details>
 
-        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">Clang AST (Simplified, from <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">flang-new -fopenmp -Xclang -ast-dump</code>)</h3>
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-          <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-            {clangAst}
-          </SyntaxHighlighter>
-        </div>
+        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">Fortran Code without Pragmas (Using GOMP Calls)</h3>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            View Fortran Code with GOMP Calls
+          </summary>
+          <div className="relative mt-2">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
+            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+              {fortranCodeWithoutPragmas}
+            </SyntaxHighlighter>
+          </div>
+        </details>
 
-        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">Proposed LFortran ASR</h3>
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-          <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-            {lfortranAsrWithPragmas}
-          </SyntaxHighlighter>
-        </div>
+        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">Clang AST Representation</h3>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            View Clang AST Representation
+          </summary>
+          <div className="relative mt-2">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
+            <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+              {clangAst}
+            </SyntaxHighlighter>
+          </div>
+        </details>
 
-        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">Without Pragmas (Fortran with GOMP Calls)</h3>
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-          <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-            {fortranCodeWithoutPragmas}
-          </SyntaxHighlighter>
-        </div>
-
-        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">Proposed LFortran ASR</h3>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          Same as above, since the <code className="bg-indigo-100 dark:bg-indigo-900 px-1 py-0.5 rounded">OMPRegion</code> node captures the directive’s intent, which gets lowered to GOMP calls in the backend. Pretty neat, right? 😎
-        </p>
+        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">Proposed LFortran ASR Design</h3>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            View Proposed LFortran ASR Design
+          </summary>
+          <div className="relative mt-2">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
+            <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+              {lfortranAsrWithPragmas}
+            </SyntaxHighlighter>
+          </div>
+        </details>
       </div>
 
-      {/* Progress and Issues Section */}
+      {/* Next Steps Section
       <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          📈 Progress So Far & Issues to Tackle
+          Next Steps
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          To keep things on track, I’ve opened a few issues to guide the work:
+          In Week 2, I plan to focus on the following tasks:
         </p>
         <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li><a href="https://github.com/lfortran/lfortran/issues/7363" className="text-indigo-500 dark:text-indigo-400 hover:underline">[OPENMP] TEAM Construct [#7363]</a> 🏟️</li>
-          <li><a href="https://github.com/lfortran/lfortran/issues/7365" className="text-indigo-500 dark:text-indigo-400 hover:underline">[OPENMP] TASK Construct [#7365]</a> 📋</li>
-          <li><a href="https://github.com/lfortran/lfortran/issues/7366" className="text-indigo-500 dark:text-indigo-400 hover:underline">[OPENMP] SECTIONS Construct [#7366]</a> 🧩</li>
+          <li>Prototype the OMPRegion node for the sections construct (<a href="https://github.com/lfortran/lfortran/issues/7366" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7366</a>), lowering it to GOMP_sections_start and GOMP_sections_end calls.</li>
+          <li>Validate the MREs against the outputs of GFortran and Clang, using tools such as -fdump-tree-omp and -emit-llvm to ensure correctness.</li>
+          <li>Propose a shared partitioning module for DoConcurrentLoop and OMPRegion nodes to streamline loop distribution logic.</li>
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          The main convo is happening in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>, where I’ve shared MREs (C and Fortran, with and without pragmas) and analyzed how Clang and GFortran handle OpenMP. These issues come with detailed MREs and GOMP-based implementations to steer the design in the right direction. Let’s keep the momentum going! 💪
+          The work completed in Week 1 establishes a strong foundation for enhancing LFortran’s OpenMP capabilities. I welcome feedback on the OMPRegion design and the DO CONCURRENT proposal in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>.
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }

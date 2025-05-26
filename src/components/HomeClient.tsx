@@ -11,6 +11,7 @@ import { HTMLMotionProps } from "framer-motion";
 const MotionSection = motion.section as React.ComponentType<HTMLMotionProps<"section"> & React.HTMLAttributes<HTMLElement>>;
 const MotionH1 = motion.h1 as React.ComponentType<HTMLMotionProps<"h1"> & React.HTMLAttributes<HTMLHeadingElement>>;
 const MotionH2 = motion.h2 as React.ComponentType<HTMLMotionProps<"h2"> & React.HTMLAttributes<HTMLHeadingElement>>;
+const MotionH3 = motion.h3 as React.ComponentType<HTMLMotionProps<"h3"> & React.HTMLAttributes<HTMLHeadingElement>>;
 const MotionP = motion.p as React.ComponentType<HTMLMotionProps<"p"> & React.HTMLAttributes<HTMLParagraphElement>>;
 const MotionDiv = motion.div as React.ComponentType<HTMLMotionProps<"div"> & React.HTMLAttributes<HTMLDivElement>>;
 
@@ -22,7 +23,7 @@ const Hero = () => (
     transition={{ duration: 1, ease: "easeOut" }}
     className="relative text-center py-48 bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 text-white overflow-hidden"
     style={{
-      backgroundImage: "url(https://picsum.photos/1920/600?text=GSOC+Journey)",
+      backgroundImage: "url(https://cdn.pixabay.com/photo/2012/10/29/15/36/ball-63527_1280.jpg)",
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundBlendMode: "overlay",
@@ -36,16 +37,24 @@ const Hero = () => (
         transition={{ delay: 0.2, duration: 0.8 }}
         className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 to-purple-200 tracking-tight drop-shadow-lg"
       >
-        My GSoC Journey 🚀
+        GSOC @LFORTRAN
       </MotionH1>
-      <MotionP
+      <MotionH2
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.8 }}
-        className="text-xl md:text-2xl max-w-3xl mx-auto font-light leading-relaxed drop-shadow-md mt-4"
+        className="text-xl md:text-4xl max-w-3xl mx-auto font-light leading-relaxed drop-shadow-md mt-4"
       >
-        A sleek showcase of my Google Summer of Code adventures, challenges, and wins. Let’s dive in! ✨
-      </MotionP>
+        Enhancing OpenMp Support in LFortran
+      </MotionH2>
+      <MotionH3
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.8 }}
+        className="text-lg md:text-xl max-w-2xl mx-auto mt-6 font-medium"
+      >
+        BY ADITYA TRIVEDI
+      </MotionH3>
     </div>
   </MotionSection>
 );
@@ -85,7 +94,7 @@ export default function HomeClient({ posts }: { posts: { slug: string; title: st
       <nav className="sticky top-0 bg-white dark:bg-gray-800 shadow-2xl z-10 border-b border-indigo-200 dark:border-indigo-900">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500 dark:from-indigo-400 dark:to-purple-400 tracking-tight">
-            GSoC Portfolio
+            GSoC BLOGS
           </Link>
           <div className="flex items-center space-x-8">
             <Link
@@ -119,7 +128,7 @@ export default function HomeClient({ posts }: { posts: { slug: string; title: st
           transition={{ duration: 0.5 }}
           className="text-4xl font-bold text-center mb-16 text-gray-900 dark:text-gray-100 tracking-tight border-b-4 border-indigo-500 inline-block pb-2"
         >
-          Weekly Progress 📝
+          Weekly Progress
         </MotionH2>
         <div className="space-y-12">
           {posts.map((post) => (
