@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import { HTMLMotionProps } from "framer-motion";
 
 // Explicitly type MotionFooter to include HTML footer attributes
@@ -23,7 +23,7 @@ export default function Footer() {
         <h3 className="text-xl font-semibold">Connect with Me</h3>
         <div className="flex gap-8">
           <MotionAnchor
-            href="mailto:john.doe@example.com"
+            href="mailto:adit4443ya@gmail.com"
             whileHover={{ scale: 1.2, color: "#1e40af" }}
             className="text-gray-200 transition-colors"
             aria-label="Email"
@@ -31,7 +31,7 @@ export default function Footer() {
             <FaEnvelope size={28} />
           </MotionAnchor>
           <MotionAnchor
-            href="https://github.com/johndoe"
+            href="https://github.com/adit4443ya"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.2, color: "#1e40af" }}
@@ -41,7 +41,7 @@ export default function Footer() {
             <FaGithub size={28} />
           </MotionAnchor>
           <MotionAnchor
-            href="https://linkedin.com/in/johndoe"
+            href="https://www.linkedin.com/in/aditya-trivedi-a30b70259/"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.2, color: "#1e40af" }}
@@ -50,7 +50,7 @@ export default function Footer() {
           >
             <FaLinkedin size={28} />
           </MotionAnchor>
-          <MotionAnchor
+          {/* <MotionAnchor
             href="https://twitter.com/johndoe"
             target="_blank"
             rel="noopener noreferrer"
@@ -59,10 +59,10 @@ export default function Footer() {
             aria-label="Twitter"
           >
             <FaTwitter size={28} />
-          </MotionAnchor>
+          </MotionAnchor> */}
         </div>
         <p className="text-sm text-gray-400">
-          © {new Date().getFullYear()} John Doe. All rights reserved.
+          © {new Date().getFullYear()} Aditya Trivedi.
         </p>
       </div>
     </MotionFooter>
