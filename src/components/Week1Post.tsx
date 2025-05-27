@@ -221,48 +221,50 @@ schedule_type
           Current Design
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          LFortran currently supports the parallel do construct with clauses such as private, shared, reduction, and collapse. The implementation, as detailed in <a href="https://github.com/lfortran/lfortran/issues/3777" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #3777</a>, operates as follows:
+          LFortran currently supports the <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">parallel do</span> construct with clauses such as <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">private</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">shared</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">reduction</span>, and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">collapse</span>. The implementation, as detailed in <a href="https://github.com/lfortran/lfortran/issues/3777" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #3777</a>, operates as follows:
         </p>
         <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Parsing:</span> The visit_Pragma function in ast_body_visitor.cpp recognizes !$omp parallel do and converts it to a DoConcurrentLoop node in the Abstract Semantic Representation (ASR), capturing clauses and loop details.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Backend:</span> The OpenMP pass (openmp.cpp) outlines the loop body into a function, partitions iterations across threads using omp_get_thread_num and omp_get_num_threads, and generates GOMP_parallel calls to the libgomp runtime.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Example:</span> A parallel do loop is transformed into a DoConcurrentLoop node, lowered to a function with thread partitioning, as described in <a href="https://github.com/lfortran/lfortran/issues/3777#issuecomment-2104814180" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #3777, Comment #2104814180</a>.</li>
+            <li>
+            <span className="font-semibold text-indigo-600 dark:text-indigo-400">Parsing:</span> The <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">visit_Pragma</span> function in <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">ast_body_visitor.cpp</span> recognizes <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">!$omp parallel do</span> and converts it to a <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">DoConcurrentLoop</span> node in the Abstract Semantic Representation (ASR), capturing clauses and loop details.
+            </li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Backend:</span> The OpenMP pass (<span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">openmp.cpp</span>) outlines the loop body into a function, partitions iterations across threads using <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">omp_get_thread_num</span> and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">omp_get_num_threads</span>, and generates <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">GOMP_parallel</span> calls to the <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">libgomp</span> runtime.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Example:</span> A <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">parallel do</span> loop is transformed into a <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">DoConcurrentLoop</span> node, lowered to a function with thread partitioning, as described in <a href="https://github.com/lfortran/lfortran/issues/3777#issuecomment-2104814180" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #3777, Comment #2104814180</a>.</li>
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
           While this design is effective for loop-based parallelism, it presents limitations when attempting to support other OpenMP constructs.
         </p>
-      </div>
+            </div>
 
-      {/* Challenges Section */}
-      <div>
+            {/* Challenges Section */}
+            <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
           Challenges in the Current Design
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          While the DoConcurrentLoop approach is suitable for parallel do, extending it to support new constructs such as teams, tasks, and sections introduces several challenges:
+          While the <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">DoConcurrentLoop</span> approach is suitable for <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">parallel do</span>, extending it to support new constructs such as <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">teams</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">tasks</span>, and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">sections</span> introduces several challenges:
         </p>
         <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Non-Loop Constructs:</span> Constructs like sections (independent blocks) and tasks (dynamic scheduling) do not fit the loop-centric DoConcurrentLoop structure, necessitating complex workarounds.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Clause Support:</span> New clauses (e.g., num_teams for teams, depend for tasks) are difficult to integrate into the existing node’s clause arrays.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Nesting:</span> Handling nested constructs (e.g., parallel do inside teams) is challenging, as DoConcurrentLoop assumes a single loop level.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Non-Loop Constructs:</span> Constructs like <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">sections</span> (independent blocks) and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">tasks</span> (dynamic scheduling) do not fit the loop-centric <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">DoConcurrentLoop</span> structure, necessitating complex workarounds.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Clause Support:</span> New clauses (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">num_teams</span> for <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">teams</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">depend</span> for <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">tasks</span>) are difficult to integrate into the existing node’s clause arrays.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Nesting:</span> Handling nested constructs (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">parallel do</span> inside <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">teams</span>) is challenging, as <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">DoConcurrentLoop</span> assumes a single loop level.</li>
           <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Scalability:</span> Adapting a loop-based node for diverse constructs risks creating a convoluted design, which could complicate maintenance as OpenMP continues to evolve.</li>
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
           These limitations, which are further discussed in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>, necessitated the exploration of alternative designs to better accommodate a wider range of OpenMP constructs.
         </p>
-      </div>
+            </div>
 
-      {/* Proposed Design Section */}
-      <div>
+            {/* Proposed Design Section */}
+            <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          Proposed Design: OMPRegion ASR Node
+          Proposed Design: <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPRegion</span> ASR Node
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          To address the identified challenges, I propose the introduction of a new OMPRegion ASR node, designed to handle all OpenMP constructs in a flexible manner. The proposed node structure is outlined below:
+          To address the identified challenges, I propose the introduction of a new <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPRegion</span> ASR node, designed to handle all OpenMP constructs in a flexible manner. The proposed node structure is outlined below:
         </p>
         <details className="mt-4">
           <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
-            View OMPRegion Node Structure
+            View <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPRegion</span> Node Structure
           </summary>
           <div className="relative mt-2">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
@@ -275,46 +277,46 @@ schedule_type
           The benefits of this approach include:
         </p>
         <ul className="list-disc pl-6 mt-2 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Flexibility:</span> The node supports both loop-based constructs (e.g., parallel do) and non-loop constructs (e.g., sections, tasks) naturally.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Flexibility:</span> The node supports both loop-based constructs (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">parallel do</span>) and non-loop constructs (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">sections</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">tasks</span>) naturally.</li>
           <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Extensibility:</span> It facilitates the addition of new constructs and clauses by extending enums, ensuring alignment with the OpenMP 6.0 specification.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Nesting:</span> Nested directives are managed effectively through recursive OMPRegion nodes, making it suitable for complex scenarios such as teams containing a parallel do.</li>
-          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Standards Alignment:</span> The design mirrors GFortran’s tree nodes (e.g., OMP_SECTIONS, OMP_TASK) and Clang’s AST classes (e.g., OMPSectionsDirective, OMPTaskDirective), simplifying integration with the libgomp runtime.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Nesting:</span> Nested directives are managed effectively through recursive <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPRegion</span> nodes, making it suitable for complex scenarios such as <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">teams</span> containing a <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">parallel do</span>.</li>
+          <li><span className="font-semibold text-indigo-600 dark:text-indigo-400">Standards Alignment:</span> The design mirrors GFortran’s tree nodes (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMP_SECTIONS</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMP_TASK</span>) and Clang’s AST classes (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPSectionsDirective</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPTaskDirective</span>), simplifying integration with the <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">libgomp</span> runtime.</li>
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
           This proposed design, along with prototype minimal reproducible examples (MREs), has been detailed in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>, demonstrating its feasibility for implementation.
         </p>
-      </div>
+            </div>
 
-      {/* Exploration Section */}
-      <div>
+            {/* Exploration Section */}
+            <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
           Exploration of Clang and GFortran’s OpenMP Handling
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          To inform the design of the OMPRegion node, I conducted an analysis of how Clang and GFortran process OpenMP constructs, focusing on teams, tasks, and sections:
+          To inform the design of the <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPRegion</span> node, I conducted an analysis of how <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">Clang</span> and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">GFortran</span> process OpenMP constructs, focusing on <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">teams</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">tasks</span>, and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">sections</span>:
         </p>
         <ul className="list-disc pl-6 mt-4 space-y-4 text-lg text-gray-700 dark:text-gray-300">
           <li>
             <span className="font-semibold text-indigo-600 dark:text-indigo-400">GFortran:</span>
             <ul className="list-circle pl-6 mt-2 space-y-2">
-              <li><span className="font-medium">Frontend:</span> Directives are parsed into specific tree nodes (e.g., OMP_TEAMS, OMP_SECTIONS) with OMP_CLAUSE nodes to represent associated clauses.</li>
-              <li><span className="font-medium">Backend:</span> These nodes are lowered to GIMPLE, where the directive bodies are outlined into functions, and libgomp calls (e.g., GOMP_teams, GOMP_sections_start) are generated.</li>
-              <li><span className="font-medium">Example:</span> A sections directive is transformed into an OMP_SECTIONS node, which is then lowered to a switch statement with GOMP_sections_start, as documented in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>.</li>
+              <li><span className="font-medium">Frontend:</span> Directives are parsed into specific tree nodes (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMP_TEAMS</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMP_SECTIONS</span>) with <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMP_CLAUSE</span> nodes to represent associated clauses.</li>
+              <li><span className="font-medium">Backend:</span> These nodes are lowered to <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">GIMPLE</span>, where the directive bodies are outlined into functions, and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">libgomp</span> calls (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">GOMP_teams</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">GOMP_sections_start</span>) are generated.</li>
+              <li><span className="font-medium">Example:</span> A <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">sections</span> directive is transformed into an <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMP_SECTIONS</span> node, which is then lowered to a switch statement with <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">GOMP_sections_start</span>, as documented in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>.</li>
             </ul>
           </li>
           <li>
             <span className="font-semibold text-indigo-600 dark:text-indigo-400">Clang:</span>
             <ul className="list-circle pl-6 mt-2 space-y-2">
-              <li><span className="font-medium">Frontend:</span> OpenMP directives are represented as AST classes (e.g., OMPTeamsDirective, OMPTaskDirective), with separate objects for clauses.</li>
-              <li><span className="font-medium">Backend:</span> The AST is lowered to LLVM IR, generating libomp calls (e.g., __kmpc_fork_teams). LFortran, however, uses libgomp due to issues with variadic functions in libomp.</li>
-              <li><span className="font-medium">Example:</span> A task directive is represented as an OMPTaskDirective, which is lowered to __kmpc_omp_task calls.</li>
+              <li><span className="font-medium">Frontend:</span> OpenMP directives are represented as AST classes (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPTeamsDirective</span>, <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPTaskDirective</span>), with separate objects for clauses.</li>
+              <li><span className="font-medium">Backend:</span> The AST is lowered to <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">LLVM IR</span>, generating <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">libomp</span> calls (e.g., <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">__kmpc_fork_teams</span>). LFortran, however, uses <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">libgomp</span> due to issues with variadic functions in <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">libomp</span>.</li>
+              <li><span className="font-medium">Example:</span> A <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">task</span> directive is represented as an <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPTaskDirective</span>, which is lowered to <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">__kmpc_omp_task</span> calls.</li>
             </ul>
           </li>
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          This analysis, documented in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>, highlights the advantages of using specific nodes for each construct, as it enhances type safety and modularity. These findings support the adoption of the OMPRegion approach for LFortran.
+          This analysis, documented in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>, highlights the advantages of using specific nodes for each construct, as it enhances type safety and modularity. These findings support the adoption of the <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">OMPRegion</span> approach for LFortran.
         </p>
-      </div>
+            </div>
 
       {/* Issues Opened Section */}
       <div>
@@ -408,7 +410,7 @@ schedule_type
         </details>
       </div>
 
-      {/* Next Steps Section
+      {/* Next Steps Section */}
       <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
           Next Steps
@@ -417,14 +419,44 @@ schedule_type
           In Week 2, I plan to focus on the following tasks:
         </p>
         <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li>Prototype the OMPRegion node for the sections construct (<a href="https://github.com/lfortran/lfortran/issues/7366" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7366</a>), lowering it to GOMP_sections_start and GOMP_sections_end calls.</li>
-          <li>Validate the MREs against the outputs of GFortran and Clang, using tools such as -fdump-tree-omp and -emit-llvm to ensure correctness.</li>
-          <li>Propose a shared partitioning module for DoConcurrentLoop and OMPRegion nodes to streamline loop distribution logic.</li>
+          <li>Represent the OMPRegion node in ASR for the sections construct (<a href="https://github.com/lfortran/lfortran/issues/7366" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7366</a>), lowering it to <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">GOMP_sections_start</span> and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">GOMP_sections_end</span> calls.</li>
+          <li>Validate the MREs against the outputs of GFortran and Clang, using flags such as <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">-fdump-tree-all</span> and <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1 rounded font-mono text-indigo-700 dark:text-indigo-300">-Xclang -ast-dump</span> to ensure correctness.</li>
+          {/* <li>Propose a shared partitioning module for DoConcurrentLoop and OMPRegion nodes to streamline loop distribution logic.</li> */}
         </ul>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+        {/* <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
           The work completed in Week 1 establishes a strong foundation for enhancing LFortran’s OpenMP capabilities. I welcome feedback on the OMPRegion design and the DO CONCURRENT proposal in <a href="https://github.com/lfortran/lfortran/issues/7332" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>.
+        </p> */}
+        <p>
+          I would like to thank my mentors,{" "}
+          <a
+            href="https://github.com/certik"
+            className="text-indigo-500 dark:text-indigo-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ondrej Certik
+          </a>
+          {", "}
+          <a
+            href="https://github.com/Pranavchiku"
+            className="text-indigo-500 dark:text-indigo-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Pranav Goswami
+          </a>
+          {" and "}
+          <a
+            href="https://github.com/gxyd"
+            className="text-indigo-500 dark:text-indigo-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Gaurav Dhingra
+          </a>
+          {" for their critical reviews and guidance, which played an important role in improving the design of OMPRegion. I also thank the other contributors of LFortran for their support and help whenever needed."}
         </p>
-      </div> */}
+      </div>
     </div>
   );
 }
