@@ -10,6 +10,10 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
       title: "Week 1 - Kickoff Contributions to OpenMP Support in LFortran",
       date: "2025-05-24",
     },
+    "week-2": {
+      title: "Week 2 - Contribution to OpenMP Support in LFortran",
+      date: "2025-05-31",
+    },
   };
 
   const post = posts[slug] || { title: "Post Not Found", date: "N/A" };
@@ -23,5 +27,5 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
 }
 
 export async function generateStaticParams() {
-  return [{ slug: "week-1" }];
+  return [{ slug: "week-1" }, { slug: "week-2" }];
 }

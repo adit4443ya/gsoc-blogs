@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { HTMLMotionProps } from "framer-motion";
 import Week1Post from "./Week1Post";
+import Week2Post from "./Week2Post";
 
 const MotionDiv = motion.div as React.ComponentType<HTMLMotionProps<"div"> & React.HTMLAttributes<HTMLDivElement>>;
 const MotionH1 = motion.h1 as React.ComponentType<HTMLMotionProps<"h1"> & React.HTMLAttributes<HTMLHeadingElement>>;
@@ -46,7 +47,13 @@ export default function PostClient({ title, date, slug }: Props) {
           transition={{ delay: 0.4, duration: 0.5 }}
           className="bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-xl w-full"
         >
-          {slug === "week-1" ? <Week1Post /> : <p>Post content not available.</p>}
+          {slug === "week-1" ? (
+            <Week1Post />
+          ) : slug === "week-2" ? (
+            <Week2Post />
+          ) : (
+            <p>Post content not available.</p>
+          )}
         </MotionArticle>
       </div>
     </MotionDiv>
