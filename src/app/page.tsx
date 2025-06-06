@@ -4,6 +4,12 @@ import Footer from "@/components/Footer";
 export default async function Home() {
   const posts = [
     {
+      slug: "week-3",
+      title: "Week 3 - Extension of OPENMP pass to support OMPRegion ASR node for PARALLEL and DO construct",
+      date: "2025-06-06",
+      excerpt: "Decoupling of DonconcurrentLoop from Openmp Pragmas, processing with newer design.",
+    },
+    {
       slug: "week-2",
       title: "Week 2 - Implementing the OMPRegion ASR node with a stack-based approach",
       date: "2025-05-31",
