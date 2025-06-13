@@ -6,10 +6,10 @@ export const metadata = {
     default: "GSOC Blog",
     template: "%s | GSOC Blog",
   },
-  description: "Documenting my professional journey through Google Summer of Code with weekly updates and insights.",
+  description: "Documenting my journey through Google Summer of Code with weekly updates and insights.",
   openGraph: {
     title: "GSOC Blog",
-    description: "Documenting my professional journey through Google Summer of Code with weekly updates and insights.",
+    description: "Documenting my journey through Google Summer of Code with weekly updates and insights.",
     url: "https://adit4443ya.github.io/gsoc-blogs/",
     siteName: "GSOC Blog",
     images: [
