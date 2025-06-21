@@ -4,6 +4,12 @@ import Footer from "@/components/Footer";
 export default async function Home() {
   const posts = [
     {
+      slug: "week-5",
+      title: "Week 5 - Task construct and Shared/Private Clauses in Parallel Region",
+      date: "2025-06-21",
+      excerpt: "Implementation of Barrier, Critical constructs along with Variable access fix.",
+    },
+    {
       slug: "week-4",
       title: "Week 4 - Section/s, Single and Master Constructs in OpenMP",
       date: "2025-06-14",
