@@ -7,6 +7,7 @@ import Week2Post from "./Week2Post";
 import Week3Post from "./Week3Post";
 import Week4Post from "./Week4Post";
 import Week5Post from "./Week5Post";
+import Week6Post from "./Week6Post";
 
 const MotionDiv = motion.div as React.ComponentType<HTMLMotionProps<"div"> & React.HTMLAttributes<HTMLDivElement>>;
 const MotionH1 = motion.h1 as React.ComponentType<HTMLMotionProps<"h1"> & React.HTMLAttributes<HTMLHeadingElement>>;
@@ -60,6 +61,8 @@ export default function PostClient({ title, date, slug }: Props) {
             <Week4Post />
           ) : slug === "week-5" ? (
             <Week5Post />
+          ) : slug === "week-6" ? (
+            <Week6Post />
           ) : (
             <p>Post content not available.</p>
           )}

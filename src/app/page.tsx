@@ -4,6 +4,12 @@ import Footer from "@/components/Footer";
 export default async function Home() {
   const posts = [
     {
+      slug: "week-6",
+      title: " Week 6 Contribution to OpenMP Support in LFortran",
+      date: "2025-06-28",
+      excerpt: "Improved TASK construct with shared variables and added TASKWAIT.",
+    },
+    {
       slug: "week-5",
       title: "Week 5 - Task construct and Shared/Private Clauses in Parallel Region",
       date: "2025-06-21",
