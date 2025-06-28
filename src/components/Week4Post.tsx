@@ -260,7 +260,7 @@ end program openmp_44`;
       {/* Example Section */}
       <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          Example: <code className="font-semibold text-indigo-600 dark:text-indigo-400">Sections</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">Reduction</code> Constructs
+          Example: Sections and Reduction Constructs
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
           To demonstrate the new implementations, consider the following MREs from PR <a href="https://github.com/lfortran/lfortran/pull/7619" className="text-indigo-500 dark:text-indigo-400 hover:underline">#7619</a>. The first example tests the bug fix for the <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction</code> clause in a standalone <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code> construct:
