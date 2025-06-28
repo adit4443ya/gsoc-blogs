@@ -5,7 +5,7 @@ export default async function Home() {
   const posts = [
     {
       slug: "week-6",
-      title: " Week 6 Contribution to OpenMP Support in LFortran",
+      title: " Week 6 - Enhance Task construct with handling Shared vars",
       date: "2025-06-28",
       excerpt: "Improved TASK construct with shared variables and added TASKWAIT.",
     },
