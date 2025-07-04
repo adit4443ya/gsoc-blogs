@@ -29,7 +29,7 @@ export default function Week7Post() {
   if(total/=10) error stop
 end program openmp_58`;
 
-  const teamsMre = `program openmp_59
+  const teamsMre1 = `program openmp_59
   use omp_lib
   integer :: sum=0
   !$omp teams num_teams(3) reduction(+:sum)
@@ -39,7 +39,7 @@ end program openmp_58`;
   if(sum/=3) error stop
 end program openmp_59`;
 
-  const teamsParallelMre = `program openmp_60
+  const teamsMre2 = `program openmp_60
   use omp_lib
   implicit none
 integer :: sum , team_sums(4) = 0, local_sum=0
@@ -122,20 +122,27 @@ end program openmp_62`;
           GSoC 2025: Week 7 Contribution to OpenMP Support in LFortran
         </h1> */}
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          Following Week 6’s improvements to the <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKWAIT</code> constructs, Week 7 focused on implementing the <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKLOOP</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code>, and <code className="font-semibold text-indigo-600 dark:text-indigo-400">DISTRIBUTE</code> constructs. Last week, I planned to work on <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code> and enhance <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> support, but this week’s efforts expanded to include all three constructs, ensuring proper handling of <code className="font-semibold text-indigo-600 dark:text-indigo-400">shared</code> variables and <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction</code> clauses. I spent about 27 hours debugging and implementing these features, successfully compiling and running five MREs.
+          Following Week 6’s enhancements to the <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKWAIT</code> constructs, Week 7 focused on implementing the <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKLOOP</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code>, and <code className="font-semibold text-indigo-600 dark:text-indigo-400">DISTRIBUTE</code> constructs. Last week, I planned to work on <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code> and optimize <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> support, but I expanded the scope to include these additional constructs. This week, I successfully compiled and ran five MREs, spending about 27 hours to ensure <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">shared</code> variables work smoothly, including <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code> regions within <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code>.
         </p>
       </div>
 
-      {/* Implementation Details and Fixes */}
+      {/* Implementation of TASKLOOP, TEAMS, and DISTRIBUTE Constructs */}
       <div>
         <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          Implementation Details and Fixes
+          Implementing <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKLOOP</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code>, and <code className="font-semibold text-indigo-600 dark:text-indigo-400">DISTRIBUTE</code> Constructs
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          This week, I worked on adding the <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKLOOP</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code>, and <code className="font-semibold text-indigo-600 dark:text-indigo-400">DISTRIBUTE</code> constructs to LFortran’s OpenMP support. I ensured <code className="font-semibold text-indigo-600 dark:text-indigo-400">shared</code> variables and <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction</code> clauses worked correctly, including handling a <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code> region inside a <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code> region and standalone <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code> constructs. During implementation, I found a small bug: the <code className="font-semibold text-indigo-600 dark:text-indigo-400">DO</code> construct’s worksharing logic divided iterations by <code className="font-semibold text-indigo-600 dark:text-indigo-400">omp_get_max_threads</code> instead of <code className="font-semibold text-indigo-600 dark:text-indigo-400">omp_get_num_threads</code>, which tracks the current team’s thread count. This caused wrong distribution and results, so I fixed it to use the correct function.
+          This week, I worked on adding support for the <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKLOOP</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code>, and <code className="font-semibold text-indigo-600 dark:text-indigo-400">DISTRIBUTE</code> constructs to LFortran. For <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKLOOP</code>, I noticed it’s very similar to the <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> construct, with just a couple of extra clauses. I reused the existing <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> implementation by transforming <code className="font-semibold text-indigo-600 dark:text-indigo-400">!$omp taskloop</code> into a <code className="font-semibold text-indigo-600 dark:text-indigo-400">do</code> loop with nested <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> directives, keeping the approach simple and effective. For <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code>, I used a <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_teams</code> call with a function pointer for the body and handled <code className="font-semibold text-indigo-600 dark:text-indigo-400">shared</code> data, similar to <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code> regions. Since <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code> sits higher in the hierarchy, each team can spawn multiple threads with a <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code> construct. The <code className="font-semibold text-indigo-600 dark:text-indigo-400">DISTRIBUTE</code> construct was integrated to divide work across teams, ensuring proper work distribution.
         </p>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          For <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKLOOP</code>, I reviewed its documentation and noticed it’s very similar to the <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> construct, with just one or two extra clauses. I reused the existing <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> implementation by transforming <code className="font-semibold text-indigo-600 dark:text-indigo-400">taskloop</code> into a <code className="font-semibold text-indigo-600 dark:text-indigo-400">DO</code> loop with nested <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> directives, keeping the approach efficient. For <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code>, I used a <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_teams</code> call with a function pointer for its body, similar to <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code> constructs, but with <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code> as the higher-level construct, spawning threads via <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code> inside each team. To set thread limits for CI testing with the LLVM OpenMP backend, I added the environment variable <code className="font-semibold text-indigo-600 dark:text-indigo-400">KMP_TEAMS_THREAD_LIMIT=32</code> in <code className="font-semibold text-indigo-600 dark:text-indigo-400">CMakeLists.txt</code>, ensuring consistent testing.
+      </div>
+
+      {/* Bug Fix and Improvements */}
+      <div>
+        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
+          Bug Fix and Improvements
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          During implementation, I found a small bug: the <code className="font-semibold text-indigo-600 dark:text-indigo-400">DO</code> construct’s worksharing logic divided iterations by <code className="font-semibold text-indigo-600 dark:text-indigo-400">omp_get_max_threads</code> instead of <code className="font-semibold text-indigo-600 dark:text-indigo-400">omp_get_num_threads</code>, which returns the current team’s thread count. This caused wrong distribution and incorrect results. I fixed this to use the correct function, ensuring accurate work sharing. I also confirmed that <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">shared</code> variables work properly across all constructs, including <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code> regions inside <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code>. To set the <code className="font-semibold text-indigo-600 dark:text-indigo-400">thread_limit</code> for CI testing, I added the environment variable <code className="font-semibold text-indigo-600 dark:text-indigo-400">KMP_TEAMS_THREAD_LIMIT=32</code> in <code className="font-semibold text-indigo-600 dark:text-indigo-400">CMakeLists.txt</code>, applying it only to the LLVM-OMP backend for OpenMP tests.
         </p>
       </div>
 
@@ -145,7 +152,7 @@ end program openmp_62`;
           Examples: <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKLOOP</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS</code>, and <code className="font-semibold text-indigo-600 dark:text-indigo-400">DISTRIBUTE</code> Constructs
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          Below are the five MREs I compiled and ran successfully to validate the new constructs:
+          Below are the five MREs I compiled and ran successfully this week to test the new constructs and fixes.
         </p>
         <details className="mt-4">
           <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
@@ -165,7 +172,7 @@ end program openmp_62`;
           <div className="relative mt-2">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
             <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-              {teamsMre}
+              {teamsMre1}
             </SyntaxHighlighter>
           </div>
         </details>
@@ -176,7 +183,7 @@ end program openmp_62`;
           <div className="relative mt-2">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
             <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-              {teamsParallelMre}
+              {teamsMre2}
             </SyntaxHighlighter>
           </div>
         </details>
