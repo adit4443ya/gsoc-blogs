@@ -31,7 +31,7 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
       date: "2025-06-28", // Adjusted to current week based on today's date
     },
     "week-7": {
-      title: "Week 6 Contribution to OpenMP Support in LFortran",
+      title: "Week 7 Contribution to OpenMP Support in LFortran",
       date: "2025-07-05", // Adjusted to current week based on today's date
     },
   };
