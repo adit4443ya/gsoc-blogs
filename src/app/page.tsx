@@ -6,7 +6,7 @@ export default async function Home() {
     {
       slug: "week-7",
       title: " Week 7 - Teams, Distribute and Taskloop",
-      date: "2025-06-28",
+      date: "2025-07-05",
       excerpt: "Foundational Implementation for hierarchical parallelism via TEAMS construct.",
     },
     {
