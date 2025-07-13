@@ -526,68 +526,183 @@ end program openmp_08`;
           <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View Original Fortran Code
           </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a", // solid contrasting color (slate-900)
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {originalFortranCode}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          The OpenMP pass now converts this <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel do</code> construct into an <code className="font-semibold text-indigo-600 dark:text-indigo-400">OMPRegion</code> node and lowers it to use GOMP runtime calls. The equivalent lowered Fortran code, which explicitly uses GOMP calls to achieve the same parallelism, is shown below:
-        </p>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+            The OpenMP pass now converts this <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel do</code> construct into an <code className="font-semibold text-indigo-600 dark:text-indigo-400">OMPRegion</code> node and lowers it to use GOMP runtime calls. The equivalent lowered Fortran code, which explicitly uses GOMP calls to achieve the same parallelism, is shown below:
+          </p>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View Lowered Fortran Code Using GOMP Calls
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {loweredFortranCode}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          In the lowered code, the <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel do</code> construct is replaced with explicit GOMP runtime calls. A <code className="font-semibold text-indigo-600 dark:text-indigo-400">thread_data</code> structure is used to pass variables between the main function and the parallel function, ensuring thread-safe access. The <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_parallel</code> call invokes the parallel region by executing <code className="font-semibold text-indigo-600 dark:text-indigo-400">lcompilers_parallel_func</code>, which handles thread partitioning by calculating each thread’s <code className="font-semibold text-indigo-600 dark:text-indigo-400">start</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">end</code> indices based on the number of threads and loop iterations. The <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction(*:local_ctr)</code> clause is implemented using <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_atomic_start</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_atomic_end</code> to atomically update the shared <code className="font-semibold text-indigo-600 dark:text-indigo-400">local_ctr</code> variable, and a <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_barrier</code> ensures all threads synchronize before proceeding.
-        </p>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          Below are the relevant portions of the ASR generated by OpenMp pass, for the <code className="font-semibold text-indigo-600 dark:text-indigo-400">increment_ctr</code> subroutine, the parallel function <code className="font-semibold text-indigo-600 dark:text-indigo-400">lcompilers_parallel_func</code>, and the main program <code className="font-semibold text-indigo-600 dark:text-indigo-400">openmp_08</code>:
-        </p>
-        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">increment_ctr</code> Subroutine</h3>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+            In the lowered code, the <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel do</code> construct is replaced with explicit GOMP runtime calls. A <code className="font-semibold text-indigo-600 dark:text-indigo-400">thread_data</code> structure is used to pass variables between the main function and the parallel function, ensuring thread-safe access. The <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_parallel</code> call invokes the parallel region by executing <code className="font-semibold text-indigo-600 dark:text-indigo-400">lcompilers_parallel_func</code>, which handles thread partitioning by calculating each thread’s <code className="font-semibold text-indigo-600 dark:text-indigo-400">start</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">end</code> indices based on the number of threads and loop iterations. The <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction(*:local_ctr)</code> clause is implemented using <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_atomic_start</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_atomic_end</code> to atomically update the shared <code className="font-semibold text-indigo-600 dark:text-indigo-400">local_ctr</code> variable, and a <code className="font-semibold text-indigo-600 dark:text-indigo-400">GOMP_barrier</code> ensures all threads synchronize before proceeding.
+          </p>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+            Below are the relevant portions of the ASR generated by OpenMp pass, for the <code className="font-semibold text-indigo-600 dark:text-indigo-400">increment_ctr</code> subroutine, the parallel function <code className="font-semibold text-indigo-600 dark:text-indigo-400">lcompilers_parallel_func</code>, and the main program <code className="font-semibold text-indigo-600 dark:text-indigo-400">openmp_08</code>:
+          </p>
+          <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">increment_ctr</code> Subroutine</h3>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">increment_ctr</code>
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="plaintext"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {asrIncrementCtr}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">lcompilers_parallel_func</code></h3>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">lcompilers_parallel_func</code></h3>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">lcompilers_parallel_func</code>
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="plaintext"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {asrParallelFunc}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">openmp_08</code> Program</h3>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100 mt-8 mb-3">ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">openmp_08</code> Program</h3>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View ASR for <code className="font-semibold text-indigo-600 dark:text-indigo-400">openmp_08</code>
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="plaintext" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="plaintext"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {asrMainProgram}
             </SyntaxHighlighter>
-          </div>
+            </div>
         </details>
       </div>
 

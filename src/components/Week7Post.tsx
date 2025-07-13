@@ -160,9 +160,35 @@ end program openmp_62`;
           </summary>
           <div className="relative mt-2">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-              {taskloopMre}
-            </SyntaxHighlighter>
+<div className="relative mt-2">
+                {/* Contrasting, visually appealing background for code block */}
+                <div
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{
+                        background: "#0f172a", // solid contrasting color (slate-900)
+                        opacity: 0.92,
+                        boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+                    }}
+                ></div>
+                <SyntaxHighlighter
+                    language="fortran"
+                    style={dracula}
+                    customStyle={{
+                        padding: "20px 18px",
+                        borderRadius: "10px",
+                        overflowX: "auto",
+                        background: "transparent",
+                        fontSize: "1.08rem",
+                        fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+                        color: "#f8fafc",
+                        zIndex: 1,
+                        position: "relative"
+                    }}
+                    showLineNumbers
+                >
+                    {taskloopMre}
+                </SyntaxHighlighter>
+            </div>
           </div>
         </details>
         <details className="mt-4">
@@ -171,9 +197,35 @@ end program openmp_62`;
           </summary>
           <div className="relative mt-2">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-              {teamsMre1}
-            </SyntaxHighlighter>
+<div className="relative mt-2">
+                {/* Contrasting, visually appealing background for code block */}
+                <div
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{
+                        background: "#0f172a", // solid contrasting color (slate-900)
+                        opacity: 0.92,
+                        boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+                    }}
+                ></div>
+                <SyntaxHighlighter
+                    language="fortran"
+                    style={dracula}
+                    customStyle={{
+                        padding: "20px 18px",
+                        borderRadius: "10px",
+                        overflowX: "auto",
+                        background: "transparent",
+                        fontSize: "1.08rem",
+                        fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+                        color: "#f8fafc",
+                        zIndex: 1,
+                        position: "relative"
+                    }}
+                    showLineNumbers
+                >
+                    {teamsMre1}
+                </SyntaxHighlighter>
+            </div>
           </div>
         </details>
         <details className="mt-4">
@@ -182,9 +234,35 @@ end program openmp_62`;
           </summary>
           <div className="relative mt-2">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-              {teamsMre2}
-            </SyntaxHighlighter>
+<div className="relative mt-2">
+                {/* Contrasting, visually appealing background for code block */}
+                <div
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{
+                        background: "#0f172a", // solid contrasting color (slate-900)
+                        opacity: 0.92,
+                        boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+                    }}
+                ></div>
+                <SyntaxHighlighter
+                    language="fortran"
+                    style={dracula}
+                    customStyle={{
+                        padding: "20px 18px",
+                        borderRadius: "10px",
+                        overflowX: "auto",
+                        background: "transparent",
+                        fontSize: "1.08rem",
+                        fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+                        color: "#f8fafc",
+                        zIndex: 1,
+                        position: "relative"
+                    }}
+                    showLineNumbers
+                >
+                    {teamsMre2}
+                </SyntaxHighlighter>
+            </div>
           </div>
         </details>
         <details className="mt-4">
@@ -193,9 +271,35 @@ end program openmp_62`;
           </summary>
           <div className="relative mt-2">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-              {distributeMre1}
-            </SyntaxHighlighter>
+<div className="relative mt-2">
+                {/* Contrasting, visually appealing background for code block */}
+                <div
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{
+                        background: "#0f172a", // solid contrasting color (slate-900)
+                        opacity: 0.92,
+                        boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+                    }}
+                ></div>
+                <SyntaxHighlighter
+                    language="fortran"
+                    style={dracula}
+                    customStyle={{
+                        padding: "20px 18px",
+                        borderRadius: "10px",
+                        overflowX: "auto",
+                        background: "transparent",
+                        fontSize: "1.08rem",
+                        fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+                        color: "#f8fafc",
+                        zIndex: 1,
+                        position: "relative"
+                    }}
+                    showLineNumbers
+                >
+                    {distributeMre1}
+                </SyntaxHighlighter>
+            </div>
           </div>
         </details>
         <details className="mt-4">
@@ -204,9 +308,35 @@ end program openmp_62`;
           </summary>
           <div className="relative mt-2">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
-              {distributeMre2}
-            </SyntaxHighlighter>
+<div className="relative mt-2">
+                {/* Contrasting, visually appealing background for code block */}
+                <div
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{
+                        background: "#0f172a", // solid contrasting color (slate-900)
+                        opacity: 0.92,
+                        boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+                    }}
+                ></div>
+                <SyntaxHighlighter
+                    language="fortran"
+                    style={dracula}
+                    customStyle={{
+                        padding: "20px 18px",
+                        borderRadius: "10px",
+                        overflowX: "auto",
+                        background: "transparent",
+                        fontSize: "1.08rem",
+                        fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+                        color: "#f8fafc",
+                        zIndex: 1,
+                        position: "relative"
+                    }}
+                    showLineNumbers
+                >
+                    {distributeMre2}
+                </SyntaxHighlighter>
+            </div>
           </div>
         </details>
       </div>

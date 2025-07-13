@@ -269,51 +269,143 @@ end program openmp_44`;
           <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View MRE for <code className="font-semibold text-indigo-600 dark:text-indigo-400">Reduction</code> Bug Fix
           </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a", // solid contrasting color (slate-900)
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {openmp47Mre}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          The OpenMP pass lowers this to the following Fortran code using GOMP calls, ensuring the <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction(*:res)</code> operates correctly across threads:
-        </p>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+            The OpenMP pass lowers this to the following Fortran code using GOMP calls, ensuring the <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction(*:res)</code> operates correctly across threads:
+          </p>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View Lowered Fortran Code for <code className="font-semibold text-indigo-600 dark:text-indigo-400">Reduction</code> Bug Fix
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {openmp47Lowered}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          The second example showcases the <code className="font-semibold text-indigo-600 dark:text-indigo-400">sections</code> construct with a <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction(+:tid)</code> clause:
-        </p>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+            The second example showcases the <code className="font-semibold text-indigo-600 dark:text-indigo-400">sections</code> construct with a <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction(+:tid)</code> clause:
+          </p>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View MRE for <code className="font-semibold text-indigo-600 dark:text-indigo-400">Sections</code> Construct
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {openmp44Mre}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-          The OpenMP pass lowers this to the following Fortran code using GOMP calls, distributing the sections across threads:
-        </p>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+            The OpenMP pass lowers this to the following Fortran code using GOMP calls, distributing the sections across threads:
+          </p>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View Lowered Fortran Code for <code className="font-semibold text-indigo-600 dark:text-indigo-400">Sections</code> Construct
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {openmp44Lowered}
             </SyntaxHighlighter>
           </div>

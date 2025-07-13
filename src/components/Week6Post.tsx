@@ -146,42 +146,134 @@ end program openmp_57`;
           <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View MRE for <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> with Pointers (bindc5.f90)
           </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a", // solid contrasting color (slate-900)
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {taskMre1}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View MRE for <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> with Shared Counter (openmp_55.f90)
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {taskMre2}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View MRE for <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> with Shared Counter (openmp_56.f90)
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {taskMre3}
             </SyntaxHighlighter>
-          </div>
-        </details>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+            </div>
+          </details>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
             View MRE for <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASK</code> with <code className="font-semibold text-indigo-600 dark:text-indigo-400">TASKWAIT</code> (openmp_57.f90)
-          </summary>
-          <div className="relative mt-2">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-lg"></div>
-            <SyntaxHighlighter language="fortran" style={dracula} customStyle={{ padding: "16px", borderRadius: "8px", overflowX: "auto", background: "#1e293b" }}>
+            </summary>
+            <div className="relative mt-2">
+            {/* Contrasting, visually appealing background for code block */}
+            <div
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{
+              background: "#0f172a",
+              opacity: 0.92,
+              boxShadow: "0 4px 32px 0 rgba(79,70,229,0.10), 0 1.5px 4px 0 rgba(30,41,59,0.15)"
+              }}
+            ></div>
+            <SyntaxHighlighter
+              language="fortran"
+              style={dracula}
+              customStyle={{
+              padding: "20px 18px",
+              borderRadius: "10px",
+              overflowX: "auto",
+              background: "transparent",
+              fontSize: "1.08rem",
+              fontFamily: "Fira Mono, Menlo, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+              color: "#f8fafc",
+              zIndex: 1,
+              position: "relative"
+              }}
+              showLineNumbers
+            >
               {taskMre4}
             </SyntaxHighlighter>
           </div>
