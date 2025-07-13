@@ -748,6 +748,8 @@ end program openmp_69`;
         <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
+            <li>Figure out a way to test <code className="font-semibold text-indigo-600 dark:text-indigo-400">Target Offloading</code> at CI.</li>
+            <li>Figure Out some way to implement Target constructs without any dedicated GPU (If any).</li>
           I thank my mentors, <a href="https://github.com/certik" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Ondrej Certik</a>, <a href="https://github.com/Pranavchiku" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Pranav Goswami</a>, and <a href="https://github.com/gxyd" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Gaurav Dhingra</a>, for their guidance. I also appreciate the LFortran community’s support.
         </p>
       </div>
