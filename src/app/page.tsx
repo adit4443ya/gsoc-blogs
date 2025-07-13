@@ -4,6 +4,12 @@ import Footer from "@/components/Footer";
 export default async function Home() {
   const posts = [
     {
+      slug: "week-8",
+      title: " Week 8 - Schedule and num_threads clause, ATOMIC construct",
+      date: "2025-07-12",
+      excerpt: "Implementation of different Scheduling modes.",
+    },
+    {
       slug: "week-7",
       title: " Week 7 - Teams, Distribute and Taskloop",
       date: "2025-07-05",
