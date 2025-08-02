@@ -4,10 +4,16 @@ import Footer from "@/components/Footer";
 export default async function Home() {
   const posts = [
     {
+      slug: "week-11",
+      title: "Week 11 - CPU Emulation of CUDA* specific functionCalls",
+      date: "2025-08-02",
+      excerpt: "Extended C-backend for dumping CUDA equivalent code of Openmp Target Constructs.",
+    },
+    {
       slug: "week-10",
       title: "Week 10 - Approach for OpenMP Offloading",
       date: "2025-07-26",
-      excerpt: "Extended C-backend for target offloading with GPU support.",
+      excerpt: "Extended C-backend for dumping OpenMp Target Offloading constructs.",
     },
     {
       slug: "week-9",

@@ -46,6 +46,10 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
       title: "Week 10 Contribution to OpenMP Support in LFortran",
       date: "2025-07-26",
     },
+    "week-11": {
+      title: "Week 11 Contribution to OpenMP Support in LFortran",
+      date: "2025-08-02",
+    },
   };
 
   const post = posts[slug] || { title: "Post Not Found", date: "N/A" };
@@ -59,5 +63,5 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
 }
 
 export async function generateStaticParams() {
-  return [{ slug: "week-1" }, { slug: "week-2" }, { slug: "week-3" }, { slug: "week-4" }, { slug: "week-5" }, { slug: "week-6" }, { slug: "week-7" }, { slug: "week-8" }, { slug: "week-9" }, { slug: "week-10" }];
+  return [{ slug: "week-1" }, { slug: "week-2" }, { slug: "week-3" }, { slug: "week-4" }, { slug: "week-5" }, { slug: "week-6" }, { slug: "week-7" }, { slug: "week-8" }, { slug: "week-9" }, { slug: "week-10" }, { slug: "week-11" }];
 }

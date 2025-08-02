@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
                     {cDump}
                 </SyntaxHighlighter>
             </div>
-            </div>
+          </div>
         </details>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
           The C code shows how arrays <code className="font-semibold text-indigo-600 dark:text-indigo-400">a</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">b</code> are handled as <code className="font-semibold text-indigo-600 dark:text-indigo-400">struct r32</code> with <code className="font-semibold text-indigo-600 dark:text-indigo-400">data</code> mapped as <code className="font-semibold text-indigo-600 dark:text-indigo-400">tofrom</code> and descriptors like <code className="font-semibold text-indigo-600 dark:text-indigo-400">length</code> and <code className="font-semibold text-indigo-600 dark:text-indigo-400">stride</code> as <code className="font-semibold text-indigo-600 dark:text-indigo-400">to</code>. The loop is offloaded using OpenMP directives, and the result is verified.
