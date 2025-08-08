@@ -113,9 +113,7 @@ export default function Week12Post() {
           For Week 13, I plan to:
         </p>
         <ul className="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700 dark:text-gray-300">
-          <li>Finalize the PR with additional test cases for the <code className="font-semibold text-indigo-600 dark:text-indigo-400">target_offload</code> backend.</li>
-          <li>Explore GPU-enabled CI options or adapt the current setup for broader testing.</li>
-          <li>Begin work on supporting nested offloading constructs.</li>
+          <li>Explore Openmp constructs/clauses to implement.</li>
         </ul>
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
           I thank my mentors, <a href="https://github.com/certik" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Ondrej Certik</a>, <a href="https://github.com/Pranavchiku" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Pranav Goswami</a>, and <a href="https://github.com/gxyd" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Gaurav Dhingra</a>, for their guidance during the CI debugging and PR review. I also appreciate the LFortran community’s support as we near the project’s end.
