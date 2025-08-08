@@ -4,6 +4,12 @@ import Footer from "@/components/Footer";
 export default async function Home() {
   const posts = [
     {
+      slug: "week-12",
+      title: "Week 12 - Making CI work with target_offload backend",
+      date: "2025-08-09",
+      excerpt: "Improvements and bug fixes for OpenMP support in LFortran.",
+    },
+    {
       slug: "week-11",
       title: "Week 11 - CPU Emulation of CUDA* specific functionCalls",
       date: "2025-08-02",
