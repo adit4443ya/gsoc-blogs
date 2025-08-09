@@ -107,25 +107,83 @@ export default function Week12Post() {
 
       {/* Concluding Reflections Section */}
       <div>
-        <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
-          Reflections on the 12-Week Journey
-        </h2>
-        <div className="space-y-6 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          <p>
-            Over these 12 weeks, I made significant progress in enhancing OpenMP support in LFortran. I implemented 12 constructs—<code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">do</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">tasks</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">taskloop</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">distribute</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">section/sections</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">single</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">master</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">critical</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">atomic</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">barrier</code>, and <code className="font-semibold text-indigo-600 dark:text-indigo-400">taskwait</code>—along with 8 clauses—<code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">shared</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">private</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">num_teams</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">num_threads</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">collapse</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">thread_limit</code>, and <code className="font-semibold text-indigo-600 dark:text-indigo-400">schedule</code>, as detailed in <a href="https://github.com/lfortran/lfortran/issues/7332#issuecomment-3039301414" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>. This work has transformed LFortran into a more capable tool for parallel programming, paving the way for high-performance computing and GPU acceleration.
-          </p>
-          <p>
-            The project began with designing the <code className="font-semibold text-indigo-600 dark:text-indigo-400">OMPRegion</code> ASR node, a structure designed to support nested and combined directives with a stack-based approach for scalability. Then, I began to implement these features in the OpenMP pass, resolving challenges like shared data handling, segmentation faults and variable scoping to ensure smooth execution. The final phase involved exploring target offloading, where I studied Clang’s LLVM-based system, host-device models, memory management, and runtime dependencies like <code className="font-semibold text-indigo-600 dark:text-indigo-400">libomptarget</code>. This led to extending the C-backend for GPU code in PR <a href="https://github.com/lfortran/lfortran/pull/8243" className="text-indigo-500 dark:text-indigo-400 hover:underline">#8243</a>, detailed in <a href="https://github.com/lfortran/lfortran/issues/4497" className="text-indigo-500 dark:text-indigo-900 px-1 py-0.5 rounded">Issue #4497</a>, using a dual-mode switch for CPU/GPU testing and dumping equivalent OMP-C/CUDA code for given input.
-          </p>
-          <p>
-        This experience has taught me that designing anything—be it an ASR node or a feature implementation—is the most critical and foundational step, which requires lots of research and vision, as the entire progress and feature set depends on it. Also, I learned that it requires patience and multiple iterations, especially when implementing those proposed designs to bring out the most optimal solutions. 
+  <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-10 mb-4 border-l-4 border-indigo-500 pl-4">
+    Conclusion on the 12-Week Journey
+  </h2>
+  <div className="space-y-6 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
 
-        </p>
-        <p>
-        I’m grateful for this opportunity to introduce a wide range of OpenMP features, contributing to the HPC domain and paving the path for LFortran to compile and run Parallel Fortran Codes. This journey has fueled my growth in skills—from Designing ASR Nodes to Implementations of OpenMP Features to GPU programming—and I extend my sincere thanks to my mentors, <a href="https://github.com/certik" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Ondrej Certik</a>, <a href="https://github.com/Pranavchiku" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Pranav Goswami</a>, and <a href="https://github.com/gxyd" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer">Gaurav Dhingra</a>, for their invaluable guidance, and to the LFortran community for their support throughout this rewarding project.
-      </p>
-        </div>
-      </div>
+    {/* Overview of Accomplishments */}
+    <p>
+      Over these 12 weeks, I significantly advanced OpenMP support in LFortran, enabling a broader set of parallel programming capabilities and paving the way for high-performance computing and GPU acceleration.
+    </p>
+
+    <ul className="list-disc list-inside space-y-2">
+      <li>
+        <strong>Thread-based parallel constructs:</strong> <code className="font-semibold text-indigo-600 dark:text-indigo-400">parallel</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">do</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">single</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">master</code>
+      </li>
+      <li>
+        <strong>Task-based constructs:</strong> <code className="font-semibold text-indigo-600 dark:text-indigo-400">task</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">taskloop</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">taskwait</code>
+      </li>
+      <li>
+        <strong>Teams & distributed work constructs:</strong> <code className="font-semibold text-indigo-600 dark:text-indigo-400">teams</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">distribute</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">section/sections</code>
+      </li>
+      <li>
+        <strong>Synchronization constructs:</strong> <code className="font-semibold text-indigo-600 dark:text-indigo-400">critical</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">taskwait</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">atomic</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">barrier</code>
+      </li>
+      <li>
+        <strong>Data & control clauses:</strong> <code className="font-semibold text-indigo-600 dark:text-indigo-400">reduction</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">shared</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">private</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">collapse</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">schedule</code>
+      </li>
+      <li>
+        <strong>Environment & resource clauses:</strong> <code className="font-semibold text-indigo-600 dark:text-indigo-400">num_teams</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">num_threads</code>, <code className="font-semibold text-indigo-600 dark:text-indigo-400">thread_limit</code>
+      </li>
+    </ul>
+    <p className="mt-2">
+      Full technical details can be found in <a href="https://github.com/lfortran/lfortran/issues/7332#issuecomment-3039301414" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #7332</a>.
+    </p>
+
+    {/* The Journey */}
+    <h3 className="text-2xl font-semibold mt-8 mb-3">The Journey: From Designing ASR to GPU Offloading in a Nutshell</h3>
+    <ul className="list-disc list-inside space-y-2">
+      <li>
+        <strong>Design phase:</strong> Created the <code className="font-semibold text-indigo-600 dark:text-indigo-400">OMPRegion</code> ASR node to support nested and combined directives with a stack-based approach for scalability and maintainability.
+      </li>
+      <li>
+        <strong>Implementation phase:</strong> Incrementally integrated OpenMP constructs and clauses into the compiler’s OpenMP pass, resolving challenges like variable scoping, shared data handling, and segmentation faults.
+      </li>
+      <li>
+        <strong>GPU exploration phase:</strong> Studied Clang’s LLVM-based host-device model, <code className="font-semibold text-indigo-600 dark:text-indigo-400">libomptarget</code> runtime, and GPU memory management to extend LFortran’s C-backend for target offloading.  
+        Resulted in <a href="https://github.com/lfortran/lfortran/pull/8243" className="text-indigo-500 dark:text-indigo-400 hover:underline">PR #8243</a> and <a href="https://github.com/lfortran/lfortran/issues/4497" className="text-indigo-500 dark:text-indigo-400 hover:underline">Issue #4497</a>, enabling CPU/GPU dual-mode execution and dumping equivalent OMP-C/CUDA code.
+      </li>
+    </ul>
+
+    {/* What I Learned */}
+    <h3 className="text-2xl font-semibold mt-8 mb-3">Key Learnings</h3>
+    <ul className="list-disc list-inside space-y-2">
+      <li>Designing compiler features is the most critical as well as important foundational step—deep research and forward planning dictate the feasibility of the entire implementations of all the feature in feature set.</li>
+      <li>Implementation often requires multiple iterations and careful debugging to achieve stability and optimal performance.</li>
+      <li>Understanding the full stack—from language constructs to runtime behavior—is essential when bridging CPU and GPU execution paths.</li>
+      <li>Effective communication and collaboration with mentors and the open-source community boosts problem-solving and knowledge growth.</li>
+    </ul>
+
+    {/* Final Status */}
+    <h3 className="text-2xl font-semibold mt-8 mb-3">Final Status</h3>
+    <ul className="list-disc list-inside space-y-2">
+      <li>12 OpenMP constructs and 8 clauses fully implemented and tested in LFortran.</li>
+      <li>OMPRegion-based architecture ready for future OpenMP extensions.</li>
+      <li>Initial GPU offloading support integrated via C-backend with host-device mode switching.</li>
+      <li>Foundational groundwork laid for LFortran to compile and run parallel Fortran code efficiently on both CPUs and GPUs.</li>
+    </ul>
+
+    {/* Gratitude */}
+    <p className="mt-6">
+      I’m grateful for this opportunity to contribute to the HPC domain and for the guidance of my mentors — 
+      <a href="https://github.com/certik" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer"> Ondrej Certik</a>, 
+      <a href="https://github.com/Pranavchiku" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer"> Pranav Goswami</a>, and 
+      <a href="https://github.com/gxyd" className="text-indigo-500 dark:text-indigo-400 hover:underline" target="_blank" rel="noopener noreferrer"> Gaurav Dhingra</a> — 
+      as well as the LFortran community, whose support made this 12-week journey both rewarding and transformative.
+    </p>
+  </div>
+</div>
     </div>
   );
 }
