@@ -36,7 +36,7 @@ export default function Week12Post() {
       {/* Recap and Motivation Section */}
       <div className="relative">
         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          Following Week 11’s development of the dual-mode C-backend for CPU and GPU offloading, Week 12, the final week of GSoC, focused on cleaning up the branch and preparing PR <a href="https://github.com/lfortran/lfortran/pull/8243" className="text-indigo-500 dark:text-indigo-400 hover:underline">#8243</a> for merge. Last week, I planned to refine the backend and explore CI solutions. This week, I fixed CI failures in the target offload backend, renamed the CPU implementation file, merged a PR for the combined <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS DISTRIBUTE</code> construct, and documented steps for using the C-backend to dump OMP and CUDA code, spending about 20 hours wrapping up these tasks.
+          Following Week 11’s development of the dual-mode C-backend for CPU and GPU offloading, Week 12, the final week of GSoC, focused on cleaning up the branch and preparing PR <a href="https://github.com/lfortran/lfortran/pull/8243" className="text-indigo-500 dark:text-indigo-400 hover:underline">#8243</a> for merge. Last week, I planned to refine the backend and explore CI solutions. This week, I fixed CI failures in the target offload backend, renamed the CPU implementation file, merged a PR for the combined <code className="font-semibold text-indigo-600 dark:text-indigo-400">TEAMS DISTRIBUTE</code> construct, and documented steps for using the C-backend to dump OMP and CUDA code, spending about 24 hours wrapping up these tasks.
         </p>
       </div>
 
